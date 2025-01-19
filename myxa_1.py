@@ -56,7 +56,11 @@ def game_update():
         canvas.itemconfig(npc_id, image=bottom_image)
     else:
         canvas.itemconfig(npc_id, image=top_image)
+<<<<<<< HEAD
     window.after(500, game_update)
+=======
+    window.after(1000, game_update)
+>>>>>>> e2f972e5da2582822c2c8e99f6dfac2e4670ed0c
 
 def update_points():
     canvas.itemconfigure(text_id, text=f'Очки: {score}')
@@ -82,7 +86,7 @@ def mouse_motion(event):
 
 def show_start_screen():
     global start_message
-    canvas.config(bg="blue")
+    canvas.config(bg="green")
     start_message = canvas.create_text(game_width / 2, game_height / 2, text="Поймай как можно больше мух", fill="black", font="Arial 30")
     window.after(3000, hide_start_screen)
 
@@ -102,9 +106,15 @@ def start_game():
 def update_timer():
     global game_time_left
     if game_time_left > 0:
+<<<<<<< HEAD
         game_time_left -= 500
         timer_label.config(text=f"Время: {game_time_left // 500}")
         window.after(500, update_timer)
+=======
+        game_time_left -= 1000
+        timer_label.config(text=f"Время: {game_time_left // 1000}")
+        window.after(1000, update_timer)
+>>>>>>> e2f972e5da2582822c2c8e99f6dfac2e4670ed0c
     else:
         end_game()
 
