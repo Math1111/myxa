@@ -56,7 +56,7 @@ def game_update():
         canvas.itemconfig(npc_id, image=bottom_image)
     else:
         canvas.itemconfig(npc_id, image=top_image)
-    window.after(400, game_update)
+    window.after(500, game_update)
 
 def update_points():
     canvas.itemconfigure(text_id, text=f'Очки: {score}')
@@ -78,6 +78,7 @@ def mouse_click(e):
 def mouse_motion(event):
     global mouse_x, mouse_y
     mouse_x, mouse_y = event.x, event.y
+    canvas.coords(myxaboy_id, mouse_x-30, mouse_y-20)  # Перемещаем картинку вслед за курсором
 
 def show_start_screen():
     global start_message
@@ -101,9 +102,9 @@ def start_game():
 def update_timer():
     global game_time_left
     if game_time_left > 0:
-        game_time_left -= 400
-        timer_label.config(text=f"Время: {game_time_left // 400}")
-        window.after(400, update_timer)
+        game_time_left -= 500
+        timer_label.config(text=f"Время: {game_time_left // 500}")
+        window.after(500, update_timer)
     else:
         end_game()
 
@@ -115,6 +116,7 @@ def end_game():
     final_score_label = Label(canvas, text=f"Конец игры!\nВаш счёт: {score}", font="Arial 40", fg="white", bg="purple")
     final_score_label.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+# Настройки игры
 game_width = 720
 game_height = 720
 npc_width = 120
@@ -123,19 +125,23 @@ score = 10
 mouse_x = mouse_y = 0
 gameover = False
 game_time_left = 0
+
+# Создание окна
 window = Tk()
-
-bottom_image = PhotoImage(file='myxa_niz.png')
-top_image = PhotoImage(file='myxa_verx.png')
-
 window.title('Проучи тролля')
 window.resizable(width=False, height=False)
+
+# Загрузка изображений
+bottom_image = PhotoImage(file='myxa_niz.png')
+top_image = PhotoImage(file='myxa_verx.png')
+myxaboy_image = PhotoImage(file='myxaboy.png')
+
+# Создание холста
 canvas = Canvas(window, width=game_width, height=game_height, bg="black")
 npc_id = canvas.create_image(0, 0, anchor='nw', image=bottom_image)
 canvas.itemconfig(npc_id, state='hidden')  # Скрываем изображение перед началом игры
 timer_label = Label(canvas, text="", font="Arial 16", fg="black", bg="white")
 timer_label.place(x=10, y=10)
-
 text_id = canvas.create_text(
     game_width - 10, 10,
     fill='black',
@@ -143,14 +149,17 @@ text_id = canvas.create_text(
     text=f'Очки: {score}',
     anchor=NE)
 
-screamer_image = PhotoImage(file='screamer.png')
-screamer_id = canvas.create_image(0, 0, image=screamer_image,
-                                  anchor=NW)
-canvas.itemconfig(screamer_id, state='hidden')
+# Картинка, следующая за курсором
+myxaboy_id = canvas.create_image(0, 0, image=myxaboy_image, anchor='nw')
 
+# Привязка событий
 canvas.bind('<Button>', mouse_click)
 canvas.bind('<Motion>', mouse_motion)
-
 canvas.pack()
+
+# Скрытие курсора
+window.config(cursor="none")
+
+# Начало игры
 show_start_screen()
 window.mainloop()
